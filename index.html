@@ -168,7 +168,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 </div>
 
 <script>
-const API_BASE = "https://timeblock-vercel.vercel.app/api/blocks";
+const API_BASE = "https://여기에-본인-vercel-주소.vercel.app/api/blocks";
 const SYNC_SECRET = "";
 
 const HS=9, HE=17, STEP=30, SLOTH=30;
@@ -243,8 +243,8 @@ function renderLegend(){
   const ab=document.getElementById('addCatBtn');if(ab&&!ab.disabled)ab.onclick=openCatSheet;
 }
 function delCategory(id){
-  if(!confirm('이 카테고리를 삭제할까요? (이 색의 블록은 회색으로 표시돼요)'))return;
   CATS=CATS.filter(c=>c.id!==id);saveCats();render();
+  setStatus('','카테고리 삭제됨');
 }
 function openCatSheet(){
   catDraftColor=PALETTE[0];
@@ -264,11 +264,12 @@ function renderCatColors(){
 }
 function addCategory(){
   const name=document.getElementById('catName').value.trim();
-  if(!name){alert('이름을 입력해주세요!');return;}
-  if(CATS.some(c=>c.id===name)){alert('같은 이름의 카테고리가 이미 있어요!');return;}
-  if(CATS.length>=MAX_CATS){alert('카테고리는 최대 '+MAX_CATS+'개예요!');return;}
+  if(!name){setStatus('err','이름을 입력해주세요');return;}
+  if(CATS.some(c=>c.id===name)){setStatus('err','같은 이름이 이미 있어요');return;}
+  if(CATS.length>=MAX_CATS){setStatus('err','카테고리는 최대 '+MAX_CATS+'개예요');return;}
   CATS.push({id:name,label:name,color:catDraftColor||PALETTE[0]});
   saveCats();closeCatSheet();render();
+  setStatus('','카테고리 추가됨');
 }
 
 function renderCur(){
