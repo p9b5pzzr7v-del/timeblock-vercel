@@ -13,7 +13,7 @@ const PROP = {
   time: "Time",
   category: "Category",
   done: "Done",
-  subtask: "sub task", // 업무 태스크 DB를 가리키는 Relation 속성
+  subtask: "Sub Task", // 업무 태스크 DB를 가리키는 Relation 속성
 };
 const SUBTASK_TITLE_PROP = "Sub Task"; // 업무 태스크 DB의 제목 속성 이름
 
