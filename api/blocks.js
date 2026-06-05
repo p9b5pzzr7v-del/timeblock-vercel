@@ -12,9 +12,10 @@ const PROP = {
   title: "Title",
   time: "Time",
   category: "Category",
-  url: "URL",
   done: "Done",
+  subtask: "Sub Task", // 업무 태스크 DB를 가리키는 Relation 속성
 };
+const SUBTASK_TITLE_PROP = "이름"; // 업무 태스크 DB의 제목 속성 이름
 
 let cachedDataSourceId = null;
 
@@ -50,15 +51,45 @@ function pageToBlock(page) {
   const p = page.properties;
   const titleArr = p[PROP.title]?.title || [];
   const time = p[PROP.time]?.date || {};
+  const relation = p[PROP.subtask]?.relation || [];
   return {
     id: page.id,
     title: titleArr.map((t) => t.plain_text).join("") || "제목 없음",
     cat: p[PROP.category]?.select?.name || "etc",
     start: time.start || null,
     end: time.end || null,
-    url: p[PROP.url]?.url || "",
     done: p[PROP.done]?.checkbox || false,
+    subtaskIds: relation.map((r) => r.id), // 연결된 업무 페이지 ID들
+    subtasks: [], // 아래에서 제목으로 채움
   };
+}
+
+// 연결된 업무 페이지들의 제목을 가져와 블록에 채워넣기
+async function resolveSubtasks(blocks) {
+  // 중복 제거한 모든 업무 페이지 ID 모으기
+  const allIds = [...new Set(blocks.flatMap((b) => b.subtaskIds))];
+  const titleMap = {};
+  // 페이지별로 제목 조회 (병렬)
+  await Promise.all(
+    allIds.map(async (pid) => {
+      try {
+        const page = await notion(`pages/${pid}`);
+        const tp =
+          page.properties?.[SUBTASK_TITLE_PROP]?.title ||
+          // 제목 속성 이름이 다를 경우를 대비해, title 타입을 자동 탐색
+          Object.values(page.properties || {}).find((x) => x?.type === "title")?.title ||
+          [];
+        titleMap[pid] = tp.map((t) => t.plain_text).join("") || "(제목 없음)";
+      } catch (e) {
+        titleMap[pid] = "(불러오기 실패)";
+      }
+    })
+  );
+  // 각 블록에 제목 채우기
+  for (const b of blocks) {
+    b.subtasks = b.subtaskIds.map((id) => ({ id, title: titleMap[id] || "(제목 없음)" }));
+  }
+  return blocks;
 }
 
 // 위젯 블록 -> 노션 속성 형식
@@ -70,8 +101,6 @@ function blockToProps(b) {
     props[PROP.time] = { date: { start: b.start, end: b.end } };
   if (b.cat !== undefined)
     props[PROP.category] = { select: { name: b.cat } };
-  if (b.url !== undefined)
-    props[PROP.url] = { url: b.url || null };
   if (b.done !== undefined)
     props[PROP.done] = { checkbox: !!b.done };
   return props;
@@ -109,6 +138,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({ page_size: 100 }),
       });
       const blocks = data.results.map(pageToBlock).filter((b) => b.start);
+      await resolveSubtasks(blocks);
       return res.status(200).json({ blocks });
     }
 
