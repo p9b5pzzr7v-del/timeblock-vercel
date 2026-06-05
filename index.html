@@ -4,26 +4,27 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>타임블록</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 <style>
 :root{
   --bg:#ffffff; --bg2:#ffffff; --bg3:#f2f2f2;
-  --text:#000000; --text2:#cccccc; --text3:#cccccc;
+  --text:#555555; --text2:#cccccc; --text3:#cccccc;
   --border:#f2f2f2; --border2:#f2f2f2;
   --radius:10px; --radius-lg:16px; --radius-pill:999px;
 }
 @media(prefers-color-scheme:dark){
   :root{
     --bg:#ffffff; --bg2:#ffffff; --bg3:#f2f2f2;
-    --text:#000000; --text2:#cccccc; --text3:#cccccc;
+    --text:#555555; --text2:#cccccc; --text3:#cccccc;
     --border:#f2f2f2; --border2:#f2f2f2;
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{background:transparent;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",Roboto,sans-serif;color:var(--text);padding:14px 14px 120px;}
+body{font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;color:var(--text);padding:14px 14px 120px;}
 
 .hd{display:flex;align-items:baseline;gap:10px;margin-bottom:14px;}
-.hd-date{font-size:26px;font-weight:800;letter-spacing:-.5px;}
+.hd-date{font-size:26px;font-weight:800;letter-spacing:-.5px;color:#000000;}
 .hd-sub{font-size:14px;color:var(--text3);font-weight:500;}
 .hd-status{margin-left:auto;font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px;}
 .hd-status .dot{width:6px;height:6px;border-radius:50%;background:var(--text3);}
@@ -32,7 +33,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 
 .toggle{display:flex;background:var(--bg3);border-radius:var(--radius-pill);padding:3px;margin-bottom:6px;width:fit-content;}
 .toggle button{border:none;background:none;font-size:13px;font-weight:600;color:var(--text2);padding:6px 18px;border-radius:var(--radius-pill);cursor:pointer;}
-.toggle button.active{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.toggle button.active{background:var(--bg);color:#000000;box-shadow:0 1px 3px rgba(0,0,0,.08);}
 
 .wknav{display:flex;align-items:center;gap:6px;margin:8px 0;}
 .wknav button{border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);border-radius:var(--radius);font-size:13px;padding:4px 10px;cursor:pointer;}
@@ -43,6 +44,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 .curbar .ct{flex:1;}
 .curbar .ct-title{font-size:14px;font-weight:700;}
 .curbar .ct-time{font-size:11px;opacity:.8;}
+.curbar .ct-sub{font-size:11px;opacity:.9;margin-top:2px;}
 .curbar .cd{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;}
 .curbar .done{font-size:11px;font-weight:600;border:0.5px solid currentColor;border-radius:var(--radius-pill);padding:4px 10px;cursor:pointer;background:transparent;color:inherit;}
 
@@ -68,6 +70,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 .blk.done{opacity:.5;}
 .blk .bt{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .blk .bm{font-size:9px;opacity:.8;}
+.blk .bsub{font-size:9px;opacity:.9;margin-top:1px;}
 .ghost{position:absolute;border-radius:7px;border:1.5px dashed #ff0000;background:rgba(255,0,0,.08);z-index:6;pointer-events:none;}
 
 .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:40;display:none;}
@@ -88,6 +91,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 .stepper .val{flex:1;text-align:center;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;}
 .sheet-url{width:100%;border:0.5px solid var(--border2);border-radius:var(--radius);padding:10px 12px;font-size:13px;background:var(--bg);color:var(--text);margin-bottom:14px;outline:none;}
 .sheet-url::placeholder{color:var(--text3);}
+.sub-label{font-size:12px;color:var(--text2);margin-bottom:8px;}
+.sub-item{font-size:13px;color:#555555;padding:6px 10px;border:0.5px solid #f2f2f2;border-radius:var(--radius);margin-bottom:6px;}
 .sheet-actions{display:flex;gap:10px;}
 .sheet-actions button{height:46px;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg);color:var(--text);}
 .sheet-actions .del{flex:0 0 56px;color:#ff0000;border-color:transparent;background:var(--bg2);font-size:18px;}
@@ -96,10 +101,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
 .legend span{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);}
 .legend i{width:10px;height:10px;border-radius:2px;display:inline-block;}
 .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center;}
-.legchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#000;border:0.5px solid #f2f2f2;border-radius:999px;padding:4px 10px;}
+.legchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#555555;border:0.5px solid #f2f2f2;border-radius:999px;padding:4px 10px;}
 .legchip i{width:10px;height:10px;border-radius:2px;display:inline-block;}
 .legchip .x{cursor:pointer;color:#ff0000;font-size:12px;line-height:1;}
-.addcat{cursor:pointer;border:0.5px dashed #cccccc;color:#000;background:none;border-radius:999px;padding:4px 12px;font-size:12px;}
+.addcat{cursor:pointer;border:0.5px dashed #cccccc;color:#555555;background:none;border-radius:999px;padding:4px 12px;font-size:12px;}
 .addcat:disabled{color:#cccccc;border-color:#f2f2f2;cursor:default;}
 .cat-hint{font-size:11px;color:#cccccc;width:100%;margin-top:2px;}
 </style>
@@ -148,7 +153,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
       <button data-step="end" data-dir="1">+</button>
     </div>
   </div>
-  <input type="url" class="sheet-url" id="shUrl" placeholder="작업 환경 URL (선택)" />
+  <div id="shSubtasks"></div>
   <div class="sheet-actions">
     <button class="del" id="shDel">&#128465;</button>
     <button class="save" id="shSave">저장</button>
@@ -162,7 +167,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe U
   <input type="text" class="sheet-url" id="catName" placeholder="카테고리 이름" style="margin-bottom:16px;" />
   <div class="colors" id="catColors"></div>
   <div class="sheet-actions">
-    <button class="del" id="catCancel" style="flex:0 0 80px;color:#000;">취소</button>
+    <button class="del" id="catCancel" style="flex:0 0 80px;color:#555555;">취소</button>
     <button class="save" id="catAddBtn">추가</button>
   </div>
 </div>
@@ -204,7 +209,7 @@ function ft(min){return pad(Math.floor(min/60))+':'+pad(min%60);}
 function dateKeyOf(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function todayKey(){return dateKeyOf(new Date());}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
-function cat(id){const c=CATS.find(x=>x.id===id);if(c)return{...c,bg:c.color,text:'#000000'};return{id:'_',label:'기타',color:'#cccccc',bg:'#f2f2f2',text:'#000000'};}
+function cat(id){const c=CATS.find(x=>x.id===id);if(c)return{...c,bg:c.color,text:'#555555'};return{id:'_',label:'기타',color:'#cccccc',bg:'#f2f2f2',text:'#555555'};}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function isoParts(iso){const d=new Date(iso);return{dateKey:dateKeyOf(d),min:d.getHours()*60+d.getMinutes()};}
 function partsIso(dateKey,min){return dateKey+'T'+ft(min)+':00+09:00';}
@@ -281,7 +286,7 @@ function renderCur(){
   const w=document.getElementById('curWrap');
   if(cur){
     const c=cat(cur.cat),s=isoParts(cur.start).min,e=isoParts(cur.end).min,remain=e-nm;
-    w.innerHTML='<div class="curbar" style="background:'+c.bg+';border-left-color:'+c.color+';color:'+c.text+';"><div class="ct"><div class="ct-title">'+esc(cur.title)+'</div><div class="ct-time">'+ft(s)+' — '+ft(e)+'</div></div><div class="cd">'+remain+'분</div><button class="done" data-done="'+cur.id+'">완료</button></div>';
+    var curSub=(cur.subtasks&&cur.subtasks.length)?'<div class="ct-sub">\u21b3 '+cur.subtasks.map(function(t){return esc(t.title);}).join(', ')+'</div>':'';w.innerHTML='<div class="curbar" style="background:'+c.bg+';border-left-color:'+c.color+';color:'+c.text+';"><div class="ct"><div class="ct-title">'+esc(cur.title)+'</div><div class="ct-time">'+ft(s)+' — '+ft(e)+'</div>'+curSub+'</div><div class="cd">'+remain+'분</div><button class="done" data-done="'+cur.id+'">완료</button></div>';
     w.querySelector('[data-done]').onclick=async()=>{cur.done=true;render();try{await api('PATCH',{id:cur.id,done:true});}catch(e){}};
   }else if(next){
     const c=cat(next.cat),s=isoParts(next.start).min;
@@ -318,7 +323,7 @@ function placeBlocks(keys){
       const el=document.createElement('div');
       el.className='blk'+(b.done?' done':'');
       el.style.cssText='top:'+minToY(s)+'px;height:'+Math.max(minToY(e)-minToY(s),16)+'px;left:2px;right:2px;background:'+c.bg+';border-left-color:'+c.color+';color:'+c.text+';';
-      el.innerHTML='<div class="bt">'+(b.url?'🔗 ':'')+esc(b.title)+'</div><div class="bm">'+ft(s)+'–'+ft(e)+'</div>';
+      var subTxt=(b.subtasks&&b.subtasks.length)?'<div class="bsub">\u21b3 '+b.subtasks.map(function(t){return esc(t.title);}).join(', ')+'</div>':'';el.innerHTML='<div class="bt">'+esc(b.title)+'</div><div class="bm">'+ft(s)+'–'+ft(e)+'</div>'+subTxt;
       el.onclick=ev=>{ev.stopPropagation();openSheet(b,k);};
       colEl.appendChild(el);
     });
@@ -364,7 +369,7 @@ function bindGrid(keys){
       const key=dragState.key;
       if(dragState.ghost)dragState.ghost.remove();
       dragState=null;
-      openSheet({title:'',cat:(CATS[0]?CATS[0].id:'기타'),url:'',done:false,start:partsIso(key,a),end:partsIso(key,b),isNew:true},key);
+      openSheet({title:'',cat:(CATS[0]?CATS[0].id:'기타'),done:false,start:partsIso(key,a),end:partsIso(key,b),isNew:true},key);
     });
     colEl.addEventListener('pointercancel',()=>{if(dragState&&dragState.ghost)dragState.ghost.remove();dragState=null;});
   });
@@ -380,7 +385,7 @@ function openSheet(b,key){
   draft={...b,key:key||isoParts(b.start).dateKey};
   renderColors();
   document.getElementById('shTitle').value=draft.title||'';
-  document.getElementById('shUrl').value=draft.url||'';
+  renderSubtasks();
   syncSheet();
   document.getElementById('shDel').style.display=draft.isNew?'none':'block';
   document.getElementById('sheetBg').classList.add('open');
@@ -391,6 +396,16 @@ function closeSheet(){
   document.getElementById('sheetBg').classList.remove('open');
   document.getElementById('sheet').classList.remove('open');
   draft=null;render();
+}
+function renderSubtasks(){
+  const el=document.getElementById('shSubtasks');
+  if(!el)return;
+  const subs=(draft&&draft.subtasks)||[];
+  if(subs.length){
+    el.innerHTML='<div class="sub-label">연결된 업무</div>'+subs.map(t=>'<div class="sub-item">\u21b3 '+esc(t.title)+'</div>').join('');
+  }else{
+    el.innerHTML='<div class="sub-label">연결된 업무 없음 <span style="color:var(--text3)">(노션에서 Sub Task로 연결)</span></div>';
+  }
 }
 function renderColors(){
   document.getElementById('colors').innerHTML=CATS.map(c=>'<div class="cdot '+(c.id===draft.cat?'sel':'')+'" data-cat="'+c.id+'" style="background:'+c.color+'" title="'+c.label+'"></div>').join('');
@@ -413,11 +428,10 @@ document.querySelectorAll('.stepper button').forEach(btn=>{
   };
 });
 document.getElementById('shTitle').oninput=e=>{if(draft)draft.title=e.target.value;};
-document.getElementById('shUrl').oninput=e=>{if(draft)draft.url=e.target.value;};
 document.getElementById('sheetBg').onclick=closeSheet;
 document.getElementById('shSave').onclick=async()=>{
   if(!draft)return;
-  const payload={title:(draft.title||'').trim()||'새 블록',cat:draft.cat,url:(draft.url||'').trim(),start:draft.start,end:draft.end};
+  const payload={title:(draft.title||'').trim()||'새 블록',cat:draft.cat,start:draft.start,end:draft.end};
   const isNew=draft.isNew,id=draft.id;
   closeSheet();setStatus('','저장 중');
   try{
